@@ -1,4 +1,4 @@
-package seperate_chaining
+package seperate_chaining_array
 
 import (
 	"testing"

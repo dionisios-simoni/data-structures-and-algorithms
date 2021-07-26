@@ -1,4 +1,4 @@
-package seperate_chaining
+package seperate_chaining_array
 
 // HashTable is a data structure which contains buckets of Entry
 type HashTable struct {
