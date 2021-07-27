@@ -1,9 +1,11 @@
 package binary_search_tree
 
+// binarySearchTree is a data structure that holds nodes
 type binarySearchTree struct {
 	root *treeNode
 }
 
+// treeNode represents an entry on the binary search tree
 type treeNode struct {
 	value int
 	left  *treeNode
@@ -14,6 +16,7 @@ func newBinarySearchTree() *binarySearchTree {
 	return &binarySearchTree{}
 }
 
+// insert adds a new node to the tree, creating multiple levels of hierarchy
 func (bst *binarySearchTree) insert(value int) {
 	node := &treeNode{value: value}
 
@@ -40,6 +43,7 @@ func (bst *binarySearchTree) insert(value int) {
 	}
 }
 
+// search returns a node if found in the tree, given a value
 func (bst *binarySearchTree) search(value int) *treeNode {
 
 	currentNode := bst.root
