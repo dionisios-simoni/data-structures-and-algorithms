@@ -12,17 +12,6 @@ func TestMinHeap(t *testing.T) {
 			mh.insert(i)
 		}
 
-		/*
-								10
-							/		 \
-			             20	   		  50
-					  /		 \ 		/    \
-				    40	 	30	   90	  60
-				  /	  \		/
-				100	   70 80
-
-		*/
-
 		want := []int{10, 20, 50, 40, 30, 90, 60, 100, 70, 80}
 		got := mh.values
 
@@ -41,17 +30,6 @@ func TestMinHeap(t *testing.T) {
 		if got != want {
 			t.Errorf("invalid value extracted, want: %d but got %d", want, got)
 		}
-
-		/*
-								20
-							/		 \
-			             30	   		  50
-					  /		 \ 		/    \
-				    40	 	80	   90	  60
-				  /	  \
-				100	   70
-
-		*/
 
 		gotValues := mh.values
 		wantValues := []int{20, 30, 50, 40, 80, 90, 60, 100, 70}
