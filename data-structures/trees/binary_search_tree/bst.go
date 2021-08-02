@@ -113,6 +113,18 @@ func (bst *binarySearchTree) remove(value int) {
 	}
 }
 
+func (tn *treeNode) traverse() []int {
+
+	var preOrder []int
+
+	if tn != nil {
+		preOrder = append(preOrder, tn.value)
+		tn.left.traverse()
+		tn.right.traverse()
+	}
+	return preOrder
+}
+
 func isRoot(node *treeNode) bool {
 	return node.left == nil && node.right == nil
 }

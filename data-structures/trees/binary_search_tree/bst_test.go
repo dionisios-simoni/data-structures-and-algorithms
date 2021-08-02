@@ -221,3 +221,25 @@ func TestRemove(t *testing.T) {
 		}
 	})
 }
+
+func TestTraverse(t *testing.T) {
+
+	bst := newBinarySearchTree()
+
+	bst.insert(9)
+	bst.insert(4)
+	bst.insert(20)
+	bst.insert(1)
+	bst.insert(6)
+	bst.insert(15)
+	bst.insert(170)
+
+	got := bst.root.traverse()
+	want := []int{9, 4, 1, 6, 20, 15, 170}
+
+	for i := range got {
+		if got[i] != want[i] {
+			t.Errorf("invalid element order in traversal expected: %v but got: %v", want, got)
+		}
+	}
+}
