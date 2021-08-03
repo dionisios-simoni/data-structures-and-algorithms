@@ -1,4 +1,4 @@
-package selection_sort
+package insertion_sort
 
 import (
 	"testing"
@@ -16,9 +16,9 @@ var cases = []struct {
 	{"best", []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, expected},
 }
 
-func TestSelectionSort(t *testing.T) {
+func TestInsertionSort(t *testing.T) {
 	for _, tt := range cases {
-		got := selectionSort(tt.input)
+		got := insertionSort(tt.input)
 		for i := range tt.want {
 			if got[i] != expected[i] {
 				t.Errorf("invalid sort, expected: %v got: %v", tt.want, got)
@@ -27,20 +27,20 @@ func TestSelectionSort(t *testing.T) {
 	}
 }
 
-func BenchmarkSelectionWorst(b *testing.B) {
+func BenchmarkInsertionWorst(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		selectionSort(cases[0].input)
+		insertionSort(cases[0].input)
 	}
 }
 
-func BenchmarkSelectionAverage(b *testing.B) {
+func BenchmarkInsertionAverage(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		selectionSort(cases[1].input)
+		insertionSort(cases[1].input)
 	}
 }
 
-func BenchmarkSelectionBest(b *testing.B) {
+func BenchmarkInsertionBest(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		selectionSort(cases[2].input)
+		insertionSort(cases[2].input)
 	}
 }
