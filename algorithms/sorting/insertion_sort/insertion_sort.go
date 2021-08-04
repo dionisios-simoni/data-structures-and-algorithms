@@ -7,7 +7,7 @@ package insertion_sort
 
 // space complexity is O(1)
 
-func insertionSort(x []int) []int {
+func InsertionSort(x []int) []int {
 	for i := 1; i < len(x); i++ {
 		j := i
 		for j > 0 && x[j-1] > x[j] {

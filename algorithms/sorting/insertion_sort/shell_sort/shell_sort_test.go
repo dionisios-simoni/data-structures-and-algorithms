@@ -1,6 +1,7 @@
-package insertion_sort
+package shell_sort
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -16,9 +17,9 @@ var cases = []struct {
 	{"best", []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, expected},
 }
 
-func TestInsertionSort(t *testing.T) {
+func TestShellSort(t *testing.T) {
 	for _, tt := range cases {
-		got := InsertionSort(tt.input)
+		got := shellSort(tt.input)
 		for i := range tt.want {
 			if got[i] != expected[i] {
 				t.Errorf("invalid sort, expected: %v got: %v", tt.want, got)
@@ -27,20 +28,6 @@ func TestInsertionSort(t *testing.T) {
 	}
 }
 
-func BenchmarkInsertionWorst(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		InsertionSort(cases[0].input)
-	}
-}
-
-func BenchmarkInsertionAverage(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		InsertionSort(cases[1].input)
-	}
-}
-
-func BenchmarkInsertionBest(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		InsertionSort(cases[2].input)
-	}
+func TestAnother(t *testing.T) {
+	fmt.Println(shellSort([]int{10, 9, 8, 7, 6, 5, 4, 3}))
 }
