@@ -24,13 +24,15 @@ func inOrderTraversal(node TreeNode) []int {
 	return result
 }
 
-func inOrderTraversalR(node TreeNode, result []int) []int {
+func inOrderTraversalR(node TreeNode) []int {
 	if node == nil {
 		return []int{}
 	}
 
-	result = append(result, inOrderTraversalR(node.Left, result)...)
-	result = append(result, inOrderTraversalR(node.Right,result)...)
+	result := []int{}
+	result = append(result, inOrderTraversalR(node.Left)...)
+	result = append(result, node.Value)
+	result = append(result, inOrderTraversalR(node.Right)...)
 
 	return result
 }

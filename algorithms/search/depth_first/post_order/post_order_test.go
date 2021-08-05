@@ -1,11 +1,11 @@
-package pre_order
+package post_order
 
 import (
 	"data-structures-and-algorithms/data-structures/trees/binary_search_tree"
 	"testing"
 )
 
-func TestPreOrderTraversal(t *testing.T) {
+func TestPostOrderTraversal(t *testing.T) {
 	bst := binary_search_tree.BinarySearchTree{}
 	bst.Insert(9)
 	bst.Insert(4)
@@ -15,16 +15,17 @@ func TestPreOrderTraversal(t *testing.T) {
 	bst.Insert(15)
 	bst.Insert(1)
 
-	want := []int{9,4,1,6,20,15,170}
-	got := preOrderTraversal(bst.Root)
+	want := []int{1, 6, 4, 15, 170, 20, 9}
+	got := postOrderTraversal(bst.Root)
 
-	for i := range want {
+	for i := range got {
 		if got[i] != want[i] {
 			t.Errorf("unexpected traversal result, want: %v got: %v", want, got)
 		}
 	}
 
-	got = preOrderTraversalR(bst.Root)
+	got = postOrderTraversalR(bst.Root)
+
 	for i := range want {
 		if got[i] != want[i] {
 			t.Errorf("unexpected traversal result, want: %v got: %v", want, got)

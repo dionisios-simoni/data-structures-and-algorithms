@@ -1,6 +1,8 @@
 package pre_order
 
-import "data-structures-and-algorithms/data-structures/trees/binary_search_tree"
+import (
+	"data-structures-and-algorithms/data-structures/trees/binary_search_tree"
+)
 
 type TreeNode *binary_search_tree.TreeNode
 
@@ -23,16 +25,16 @@ func preOrderTraversal(node TreeNode) []int {
 	return result
 }
 
-func preOrderTraversalR(node TreeNode, result []int) []int {
+func preOrderTraversalR(node TreeNode) []int {
+
 	if node == nil {
 		return []int{}
 	}
 
+	result := []int{}
 	result = append(result, node.Value)
-
-	preOrderTraversal(node.Left)
-	preOrderTraversal(node.Right)
+	result = append(result, preOrderTraversalR(node.Left)...)
+	result = append(result, preOrderTraversalR(node.Right)...)
 
 	return result
-
 }

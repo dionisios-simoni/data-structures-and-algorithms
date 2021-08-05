@@ -24,9 +24,8 @@ func TestInOrderTraversal(t *testing.T) {
 		}
 	}
 
-	got = inOrderTraversalR(bst.Root, []int{})
-
-	for i := range got {
+	got = inOrderTraversalR(bst.Root)
+	for i := range want {
 		if got[i] != want[i] {
 			t.Errorf("unexpected traversal result, want: %v got: %v", want, got)
 		}
