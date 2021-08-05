@@ -1,146 +1,146 @@
 package binary_search_tree
 
-// binarySearchTree is a data structure that holds nodes
-type binarySearchTree struct {
-	root *treeNode
+// BinarySearchTree is a data structure that holds nodes
+type BinarySearchTree struct {
+	Root *TreeNode
 }
 
-// treeNode represents an entry on the binary search tree
-type treeNode struct {
-	value int
-	left  *treeNode
-	right *treeNode
+// TreeNode represents an entry on the binary Search tree
+type TreeNode struct {
+	Value int
+	Left  *TreeNode
+	Right *TreeNode
 }
 
-func newBinarySearchTree() *binarySearchTree {
-	return &binarySearchTree{}
+func newBinarySearchTree() *BinarySearchTree {
+	return &BinarySearchTree{}
 }
 
-// insert adds a new node to the tree, creating multiple levels of hierarchy
-func (bst *binarySearchTree) insert(value int) {
-	node := &treeNode{value: value}
+// Insert adds a new node to the tree, creating multiple levels of hierarchy
+func (bst *BinarySearchTree) Insert(value int) {
+	node := &TreeNode{Value: value}
 
-	if bst.root == nil {
-		bst.root = node
+	if bst.Root == nil {
+		bst.Root = node
 		return
 	}
 
-	currentNode := bst.root
+	currentNode := bst.Root
 	for {
-		if value > currentNode.value {
-			if currentNode.right == nil {
-				currentNode.right = node
+		if value > currentNode.Value {
+			if currentNode.Right == nil {
+				currentNode.Right = node
 				return
 			}
-			currentNode = currentNode.right
+			currentNode = currentNode.Right
 		} else {
-			if currentNode.left == nil {
-				currentNode.left = node
+			if currentNode.Left == nil {
+				currentNode.Left = node
 				return
 			}
-			currentNode = currentNode.left
+			currentNode = currentNode.Left
 		}
 	}
 }
 
-// search returns a node if found in the tree, given a value
-func (bst *binarySearchTree) search(value int) (node, parent *treeNode) {
+// Search returns a node if found in the tree, given a Value
+func (bst *BinarySearchTree) Search(value int) (node, parent *TreeNode) {
 
-	currentNode := bst.root
-	parentNode := &treeNode{}
+	currentNode := bst.Root
+	parentNode := &TreeNode{}
 
 	for currentNode != nil {
-		if value == currentNode.value {
+		if value == currentNode.Value {
 			return currentNode, parentNode
 		}
 
-		if value > currentNode.value {
+		if value > currentNode.Value {
 			parentNode = currentNode
-			currentNode = currentNode.right
+			currentNode = currentNode.Right
 		} else {
 			parentNode = currentNode
-			currentNode = currentNode.left
+			currentNode = currentNode.Left
 		}
 	}
 
 	return nil, nil
 }
 
-func (bst *binarySearchTree) remove(value int) {
-	node, parent := bst.search(value)
+func (bst *BinarySearchTree) Remove(value int) {
+	node, parent := bst.Search(value)
 
 	if isLeaf(node) {
-		if node.value > parent.value {
-			parent.right = nil
+		if node.Value > parent.Value {
+			parent.Right = nil
 		} else {
-			parent.left = nil
+			parent.Left = nil
 		}
 	}
 
 	if onlyLeft(node) {
-		if parent.value > node.value {
-			parent.left = node.left
+		if parent.Value > node.Value {
+			parent.Left = node.Left
 		} else {
-			parent.right = node.left
+			parent.Right = node.Left
 		}
 	}
 
 	if onlyRight(node) {
-		if parent.value > node.value {
-			parent.left = node.right
+		if parent.Value > node.Value {
+			parent.Left = node.Right
 		} else {
-			parent.right = node.right
+			parent.Right = node.Right
 		}
 	}
 
 	if isParent(node) {
-		predecessor := node.right
-		leaf := &treeNode{}
+		predecessor := node.Right
+		leaf := &TreeNode{}
 
-		for predecessor.left != nil {
+		for predecessor.Left != nil {
 			leaf = predecessor
-			predecessor = predecessor.left
+			predecessor = predecessor.Left
 		}
 
 		if isRoot(parent) {
-			bst.root.value = predecessor.value
+			bst.Root.Value = predecessor.Value
 		} else {
-			parent.right = predecessor
-			predecessor.left = node.left
+			parent.Right = predecessor
+			predecessor.Left = node.Left
 		}
 
-		leaf.left = nil
+		leaf.Left = nil
 	}
 }
 
-func (tn *treeNode) traverse() []int {
+func (tn *TreeNode) traverse() []int {
 
 	var preOrder []int
 
 	if tn != nil {
-		preOrder = append(preOrder, tn.value)
-		tn.left.traverse()
-		tn.right.traverse()
+		preOrder = append(preOrder, tn.Value)
+		tn.Left.traverse()
+		tn.Right.traverse()
 	}
 	return preOrder
 }
 
-func isRoot(node *treeNode) bool {
-	return node.left == nil && node.right == nil
+func isRoot(node *TreeNode) bool {
+	return node.Left == nil && node.Right == nil
 }
 
-func isLeaf(node *treeNode) bool {
-	return node.left == nil && node.right == nil
+func isLeaf(node *TreeNode) bool {
+	return node.Left == nil && node.Right == nil
 }
 
-func isParent(node *treeNode) bool {
-	return node.left != nil && node.right != nil
+func isParent(node *TreeNode) bool {
+	return node.Left != nil && node.Right != nil
 }
 
-func onlyLeft(node *treeNode) bool {
-	return node.left != nil && node.right == nil
+func onlyLeft(node *TreeNode) bool {
+	return node.Left != nil && node.Right == nil
 }
 
-func onlyRight(node *treeNode) bool {
-	return node.right != nil && node.left == nil
+func onlyRight(node *TreeNode) bool {
+	return node.Right != nil && node.Left == nil
 }

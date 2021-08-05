@@ -8,36 +8,36 @@ func TestInsert(t *testing.T) {
 
 	bst := newBinarySearchTree()
 
-	t.Run("inserting a root node", func(t *testing.T) {
-		bst.insert(100)
+	t.Run("inserting a Root node", func(t *testing.T) {
+		bst.Insert(100)
 
 		want := 100
-		if got := bst.root.value; got != want {
-			t.Errorf("invalid root node value, got: %d but want: %d: ", got, want)
+		if got := bst.Root.Value; got != want {
+			t.Errorf("invalid Root node Value, got: %d but want: %d: ", got, want)
 		}
 	})
 
-	t.Run("inserting a right child", func(t *testing.T) {
-		bst.insert(150)
+	t.Run("inserting a Right child", func(t *testing.T) {
+		bst.Insert(150)
 
 		want := 150
-		if got := bst.root.right.value; got != want {
-			t.Errorf("invalid right child node value, got: %d but want: %d: ", got, want)
+		if got := bst.Root.Right.Value; got != want {
+			t.Errorf("invalid Right child node Value, got: %d but want: %d: ", got, want)
 		}
 	})
 
-	t.Run("inserting a left child", func(t *testing.T) {
-		bst.insert(50)
+	t.Run("inserting a Left child", func(t *testing.T) {
+		bst.Insert(50)
 
 		want := 50
-		if got := bst.root.left.value; got != want {
-			t.Errorf("invalid right child node value, got: %d but want: %d: ", got, want)
+		if got := bst.Root.Left.Value; got != want {
+			t.Errorf("invalid Right child node Value, got: %d but want: %d: ", got, want)
 		}
 	})
 
 	t.Run("forming a subtree", func(t *testing.T) {
-		bst.insert(170)
-		bst.insert(130)
+		bst.Insert(170)
+		bst.Insert(130)
 
 		/*
 					100
@@ -48,12 +48,12 @@ func TestInsert(t *testing.T) {
 		wantRight := 170
 		wantLeft := 130
 
-		if got := bst.root.right.right.value; got != wantRight {
-			t.Errorf("invalid right subtree child node value, got: %d but want: %d: ", got, wantRight)
+		if got := bst.Root.Right.Right.Value; got != wantRight {
+			t.Errorf("invalid Right subtree child node Value, got: %d but want: %d: ", got, wantRight)
 		}
 
-		if got := bst.root.right.left.value; got != wantLeft {
-			t.Errorf("invalid left subtree child node value, got: %d but want: %d: ", got, wantLeft)
+		if got := bst.Root.Right.Left.Value; got != wantLeft {
+			t.Errorf("invalid Left subtree child node Value, got: %d but want: %d: ", got, wantLeft)
 		}
 	})
 }
@@ -61,29 +61,29 @@ func TestInsert(t *testing.T) {
 func TestSearch(t *testing.T) {
 
 	bst := newBinarySearchTree()
-	bst.insert(100)
-	bst.insert(150)
-	bst.insert(50)
-	bst.insert(170)
-	bst.insert(130)
+	bst.Insert(100)
+	bst.Insert(150)
+	bst.Insert(50)
+	bst.Insert(170)
+	bst.Insert(130)
 
-	t.Run("search for a node", func(t *testing.T) {
-		got, _ := bst.search(130)
+	t.Run("Search for a node", func(t *testing.T) {
+		got, _ := bst.Search(130)
 		want := 130
 
 		if got == nil {
 			t.Errorf("unexpected nil return, should return node")
 		} else {
-			if got.value != want {
-				t.Errorf("invalid node value was found, got: %d but want: %d: ", got.value, want)
+			if got.Value != want {
+				t.Errorf("invalid node Value was found, got: %d but want: %d: ", got.Value, want)
 			}
 		}
 	})
 
-	t.Run("search with invalid input", func(t *testing.T) {
-		got, _ := bst.search(007)
+	t.Run("Search with invalid input", func(t *testing.T) {
+		got, _ := bst.Search(007)
 		if got != nil {
-			t.Errorf("search should return nil, but got: %v", got)
+			t.Errorf("Search should return nil, but got: %v", got)
 		}
 	})
 }
@@ -92,132 +92,132 @@ func TestRemove(t *testing.T) {
 
 	bst := newBinarySearchTree()
 
-	bst.insert(8)
-	bst.insert(4)
-	bst.insert(12)
-	bst.insert(2)
-	bst.insert(6)
-	bst.insert(10)
-	bst.insert(14)
-	bst.insert(1)
-	bst.insert(3)
-	bst.insert(5)
-	bst.insert(7)
-	bst.insert(9)
-	bst.insert(11)
-	bst.insert(13)
+	bst.Insert(8)
+	bst.Insert(4)
+	bst.Insert(12)
+	bst.Insert(2)
+	bst.Insert(6)
+	bst.Insert(10)
+	bst.Insert(14)
+	bst.Insert(1)
+	bst.Insert(3)
+	bst.Insert(5)
+	bst.Insert(7)
+	bst.Insert(9)
+	bst.Insert(11)
+	bst.Insert(13)
 
-	t.Run("remove leaf node", func(t *testing.T) {
-		bst.remove(1)
-		node := bst.root
+	t.Run("Remove leaf node", func(t *testing.T) {
+		bst.Remove(1)
+		node := bst.Root
 		want := 2
 
-		for node.left != nil {
-			node = node.left
+		for node.Left != nil {
+			node = node.Left
 		}
 
-		if node.value != want {
-			t.Errorf("parent to leaf node still points to a value but shoulnd't")
+		if node.Value != want {
+			t.Errorf("parent to leaf node still points to a Value but shoulnd't")
 		}
 	})
 
-	t.Run("remove a node with one child (left)", func(t *testing.T) {
-		bst.remove(14)
-		node := bst.root
+	t.Run("Remove a node with one child (Left)", func(t *testing.T) {
+		bst.Remove(14)
+		node := bst.Root
 		want := 13
 
-		for node.right != nil {
-			node = node.right
+		for node.Right != nil {
+			node = node.Right
 		}
 
-		if got := node.value; got != want {
-			t.Errorf("invalid node replacement, should replace with: %d but value is: %d", want, got)
+		if got := node.Value; got != want {
+			t.Errorf("invalid node replacement, should replace with: %d but Value is: %d", want, got)
 		}
 	})
 
-	t.Run("remove a node with one child (right)", func(t *testing.T) {
-		bst.remove(2)
-		node := bst.root
+	t.Run("Remove a node with one child (Right)", func(t *testing.T) {
+		bst.Remove(2)
+		node := bst.Root
 		want := 3
 
-		for node.left != nil {
-			node = node.left
+		for node.Left != nil {
+			node = node.Left
 		}
 
-		if got := node.value; got != want {
-			t.Errorf("invalid node replacement, should replace with: %d but value is: %d", want, got)
+		if got := node.Value; got != want {
+			t.Errorf("invalid node replacement, should replace with: %d but Value is: %d", want, got)
 		}
 	})
 
-	t.Run("remove parent with two children", func(t *testing.T) {
-		bst.remove(6)
+	t.Run("Remove parent with two children", func(t *testing.T) {
+		bst.Remove(6)
 		want := 7
-		root := bst.root
-		got := root.left.right.value
+		root := bst.Root
+		got := root.Left.Right.Value
 
 		if got != want {
-			t.Errorf("invalid node replacement, should replace with: %d but value is: %d", want, got)
+			t.Errorf("invalid node replacement, should replace with: %d but Value is: %d", want, got)
 		}
 	})
 
-	t.Run("remove root node", func(t *testing.T) {
+	t.Run("Remove Root node", func(t *testing.T) {
 		want := 9
-		bst.remove(8)
+		bst.Remove(8)
 
-		if got := bst.root.value; got != want {
+		if got := bst.Root.Value; got != want {
 			t.Errorf("invalid")
 		}
 
-		if bst.root.right.value != 12 || bst.root.left.value != 4 {
-			t.Errorf("root removal does not preserve correct element order")
+		if bst.Root.Right.Value != 12 || bst.Root.Left.Value != 4 {
+			t.Errorf("Root removal does not preserve correct element order")
 		}
 	})
 
 	t.Run("check on tree order after removals", func(t *testing.T) {
 		elements := []int{9, 4, 12, 3, 7, 10, 13, 5, 11}
-		want := bst.root.value
+		want := bst.Root.Value
 
 		if want != elements[0] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[0], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[0], want)
 		}
 
-		want = bst.root.left.value
+		want = bst.Root.Left.Value
 		if want != elements[1] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[1], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[1], want)
 		}
 
-		want = bst.root.right.value
+		want = bst.Root.Right.Value
 		if want != elements[2] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[2], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[2], want)
 		}
 
-		want = bst.root.left.left.value
+		want = bst.Root.Left.Left.Value
 		if want != elements[3] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[3], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[3], want)
 		}
-		want = bst.root.left.right.value
+		want = bst.Root.Left.Right.Value
 		if want != elements[4] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[4], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[4], want)
 		}
 
-		want = bst.root.right.left.value
+		want = bst.Root.Right.Left.Value
 		if want != elements[5] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[5], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[5], want)
 		}
 
-		want = bst.root.right.right.value
+		want = bst.Root.Right.Right.Value
 		if want != elements[6] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[6], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[6], want)
 		}
 
-		want = bst.root.left.right.left.value
+		want = bst.Root.Left.Right.Left.Value
 		if want != elements[7] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[7], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[7], want)
 		}
 
-		want = bst.root.right.left.right.value
+		want = bst.Root.Right.Left.Right.Value
 		if want != elements[8] {
-			t.Errorf("unexpected root element, want:%d but got:%d", elements[8], want)
+			t.Errorf("unexpected Root element, want:%d but got:%d", elements[8], want)
 		}
 	})
 }
@@ -226,15 +226,15 @@ func TestTraverse(t *testing.T) {
 
 	bst := newBinarySearchTree()
 
-	bst.insert(9)
-	bst.insert(4)
-	bst.insert(20)
-	bst.insert(1)
-	bst.insert(6)
-	bst.insert(15)
-	bst.insert(170)
+	bst.Insert(9)
+	bst.Insert(4)
+	bst.Insert(20)
+	bst.Insert(1)
+	bst.Insert(6)
+	bst.Insert(15)
+	bst.Insert(170)
 
-	got := bst.root.traverse()
+	got := bst.Root.traverse()
 	want := []int{9, 4, 1, 6, 20, 15, 170}
 
 	for i := range got {
