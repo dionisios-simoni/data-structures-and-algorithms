@@ -2,28 +2,33 @@ package stack_array
 
 import "log"
 
-// stack is a data structure that is implemented on top of an int slice.
-type stack struct {
-	items []int
+// Stack is a data structure that is implemented on top of an int slice.
+type Stack struct {
+	Items []int
+	Len   int
 }
 
-// pop removes the item on the top of the stack
-func (s *stack) pop() {
-	top := len(s.items) - 1
-	s.items = s.items[:top]
+// Pop removes the item on the top of the Stack
+func (s *Stack) Pop() int {
+	removed := s.peek()
+	top := len(s.Items) - 1
+	s.Items = s.Items[:top]
+	s.Len--
+	return removed
 }
 
-// push adds an element on the top of the stack
-func (s *stack) push(item int) {
-	s.items = append(s.items, item)
+// Push adds an element on the top of the Stack
+func (s *Stack) Push(item int) {
+	s.Items = append(s.Items, item)
+	s.Len++
 }
 
-// peek returns the current item at the top of the stack
-func (s *stack) peek() int {
-	if  len(s.items) == 0 {
-		log.Fatal("stack is empty")
+// peek returns the current item at the top of the Stack
+func (s *Stack) peek() int {
+	if len(s.Items) == 0 {
+		log.Fatal("Stack is empty")
 	}
 
-	top := len(s.items) - 1
-	return s.items[top]
+	top := len(s.Items) - 1
+	return s.Items[top]
 }

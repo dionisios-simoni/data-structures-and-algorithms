@@ -67,6 +67,28 @@ func TestUnweightedGraph(t *testing.T) {
 		}
 	})
 
+	t.Run("breadth first search", func(t *testing.T) {
+		got := g.traverseBreadthFirstSearch(10)
+		want := []int{10, 20, 50, 30, 40}
+
+		for i := range want {
+			if got[i] != want[i] {
+				t.Errorf("invalid traversal result, expected: %v but got %v", want, got)
+			}
+		}
+	})
+
+	t.Run("depth first search", func(t *testing.T) {
+		got := g.traverseDepthFirstSearch(10)
+		want := []int{10, 50, 30, 40, 20}
+
+		for i := range want {
+			if got[i] != want[i] {
+				t.Errorf("invalid traversal result, expected: %v but got %v", want, got)
+			}
+		}
+	})
+
 	g.showConnections()
 }
 

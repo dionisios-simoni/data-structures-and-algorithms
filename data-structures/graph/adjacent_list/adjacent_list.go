@@ -1,6 +1,8 @@
 package adjacent_list
 
 import (
+	"data-structures-and-algorithms/data-structures/stack-queue/queue_array"
+	"data-structures-and-algorithms/data-structures/stack-queue/stack_array"
 	"errors"
 	"fmt"
 )
@@ -82,4 +84,62 @@ func (g *graph) showConnections() {
 	for _, v := range g.adjacentList {
 		fmt.Println("vertex", v.value, "edges connect with vertices:", v.edge.connections)
 	}
+}
+
+func (g *graph) traverseBreadthFirstSearch(source int) []int {
+	result := []int{}
+	visited := make(map[int]bool)
+	queue := queue_array.Queue{}
+
+	if _, ok := g.adjacentList[source]; !ok {
+		return result
+	}
+
+
+	queue.Enqueue(source)
+	visited[source] = true
+
+	for queue.Len > 0 {
+		current := queue.Dequeue()
+		vtx := g.adjacentList[current]
+
+		result = append(result, vtx.value)
+
+		for _, conn := range vtx.edge.connections {
+			if visited[conn] == false {
+				queue.Enqueue(conn)
+				visited[conn] = true
+			}
+		}
+	}
+
+	return result
+}
+
+func (g *graph) traverseDepthFirstSearch(source int) []int {
+	result := []int{}
+	visited := make(map[int]bool)
+	stack := stack_array.Stack{}
+
+	if _, ok := g.adjacentList[source]; !ok {
+		return result
+	}
+
+	stack.Push(source)
+	visited[source] = true
+
+	for stack.Len > 0 {
+		current := stack.Pop()
+		vtx := g.adjacentList[current]
+
+		result = append(result, current)
+
+		for _, conn := range vtx.edge.connections {
+			if visited[conn] == false {
+				visited[conn] = true
+				stack.Push(conn)
+			}
+		}
+	}
+	return result
 }

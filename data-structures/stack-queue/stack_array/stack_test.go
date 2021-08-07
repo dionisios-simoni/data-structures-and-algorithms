@@ -5,34 +5,34 @@ import (
 )
 
 func TestStack(t *testing.T)  {
-	s := stack{}
+	s := Stack{}
 
-	t.Run("push new items", func(t *testing.T) {
+	t.Run("Push new Items", func(t *testing.T) {
 
 		for i := 10; i <= 100; i += 10 {
-			s.push(i)
+			s.Push(i)
 		}
 
 		want := 10
-		if got := len(s.items); got != want {
-			t.Errorf("invalid stack length, want %d but got %d", want, got)
+		if got := len(s.Items); got != want {
+			t.Errorf("invalid Stack length, want %d but got %d", want, got)
 		}
 	})
 
-	t.Run("pop items from the stack", func(t *testing.T) {
-		s.pop()
-		s.pop()
+	t.Run("Pop Items from the Stack", func(t *testing.T) {
+		s.Pop()
+		s.Pop()
 
 		want := 8
-		if got := len(s.items); got != want {
-			t.Errorf("invalid stack length, want %d but got %d", want, got)
+		if got := len(s.Items); got != want {
+			t.Errorf("invalid Stack length, want %d but got %d", want, got)
 		}
 	})
 
-	t.Run("peek the top of the stack", func(t *testing.T) {
+	t.Run("peek the top of the Stack", func(t *testing.T) {
 		want := 80
 		if got := s.peek(); got != want {
-			t.Errorf("invalid top of stack item, want: %d but got: %d", want, got)
+			t.Errorf("invalid top of Stack item, want: %d but got: %d", want, got)
 		}
 	})
 }

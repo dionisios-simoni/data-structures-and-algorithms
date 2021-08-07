@@ -1,26 +1,31 @@
-package stack_array
+package queue_array
 
 import "log"
 
-// queue is a data structure that is implemented on top of an int slice.
-type queue struct {
-	items []int
+// Queue is a data structure that is implemented on top of an int slice.
+type Queue struct {
+	Items []int
+	Len   int
 }
 
-// dequeue removes the first item on the queue
-func (s *queue) dequeue() {
-	s.items = s.items[1:]
+// Dequeue removes the first item on the Queue
+func (q *Queue) Dequeue() int {
+	removed := q.Peek()
+	q.Items = q.Items[1:]
+	q.Len--
+	return removed
 }
 
-// enqueue adds an element at the end of the queue
-func (s *queue) enqueue(item int) {
-	s.items = append(s.items, item)
+// Enqueue adds an element at the end of the Queue
+func (q *Queue) Enqueue(item int) {
+	q.Items = append(q.Items, item)
+	q.Len++
 }
 
-// peek returns the current item at the start of the queue
-func (s *queue) peek() int {
-	if len(s.items) == 0 {
+// Peek returns the current item at the start of the Queue
+func (q *Queue) Peek() int {
+	if len(q.Items) == 0 {
 		log.Fatal("stack is empty")
 	}
-	return s.items[0]
+	return q.Items[0]
 }
