@@ -1,6 +1,7 @@
 package adjacent_list
 
 import (
+	"sort"
 	"testing"
 )
 
@@ -61,7 +62,7 @@ func TestUnweightedGraph(t *testing.T) {
 		got := g.adjacentList[30].edge.connections
 
 		for i := 0; i < len(got); i++ {
-			if want[i] != got[i] {
+			if want[i] != got[i][0] {
 				t.Errorf("invalid vertice edge connection expected %v but got %v", want, got)
 			}
 		}
@@ -95,27 +96,116 @@ func TestUnweightedGraph(t *testing.T) {
 func TestWeightedGraph(t *testing.T) {
 
 	wg := newGraph()
-	for i := 10; i <= 50; i += 10 {
+	for i := 1; i <= 5; i++ {
 		wg.addVertex(i)
 	}
 
 	t.Run("add edge weight in graph connections", func(t *testing.T) {
-		v1 := wg.adjacentList[10]
-		v2 := wg.adjacentList[20]
-		v3 := wg.adjacentList[30]
+		v1 := wg.adjacentList[1] // = a
+		v2 := wg.adjacentList[2] // = b
+		v3 := wg.adjacentList[3] // = c
+		v4 := wg.adjacentList[4] // = d
+		v5 := wg.adjacentList[5] // = e
 
-		weight := 10
+		/*
+			undirected, weighted, cyclic graph
+				(a) - - 6 - - (b)
+				 |		    _ /	  \5
+				 1	  _ 2 /	    	 (c)
+				 |	/			  /5
+				(d) - - 1 - - (e)
+		*/
 
+		weight := 6
 		err := wg.addEdge(v1, v2, &weight)
 		assertNoError(t, err)
-		err = wg.addEdge(v1, v3, &weight)
+
+		weight = 1
+		err = wg.addEdge(v1, v4, &weight)
 		assertNoError(t, err)
 
-		want := 20
-		got := *v2.edge.weight + *v3.edge.weight
-		if got != want {
-			t.Errorf("unexpected edge weight calculated, want %d but got %d", want, got)
-		}
+		weight = 2
+		err = wg.addEdge(v4, v2, &weight)
+		assertNoError(t, err)
+
+		weight = 1
+		err = wg.addEdge(v4, v5, &weight)
+		assertNoError(t, err)
+
+		weight = 2
+		err = wg.addEdge(v2, v5, &weight)
+		assertNoError(t, err)
+
+		weight = 5
+		err = wg.addEdge(v2, v3, &weight)
+		assertNoError(t, err)
+
+		weight = 5
+		err = wg.addEdge(v5, v3, &weight)
+		assertNoError(t, err)
+
+		t.Run("weight total is correct", func(t *testing.T) {
+			want := 22
+			got := 0
+			for _, v := range wg.adjacentList {
+				for _, conn := range v.edge.connections {
+					got += conn[1]
+				}
+			}
+
+			if want != got/2 {
+				t.Errorf("weighted graph total is invalid, expected: %d but got %d", want, got)
+			}
+		})
+
+		t.Run("djikstra's algorithm - shortest path from start to anywhere", func(t *testing.T) {
+			got := wg.dijkstra(1) // starting point is a;
+
+			sort.SliceStable(got, func(i, j int) bool {
+				return got[i].vertex < got[j].vertex
+			})
+
+			// 1 = a, 2 = b, 3 = c, 4 = d, 5 = e
+			want := []Table{
+				{1, true, 0, 0},
+				{2, true, 3, 4},
+				{3, true, 7, 5},
+				{4, true, 1, 1},
+				{5, true, 2, 4},
+			}
+
+			t.Run("correct shortest path for each vertice is formed", func(t *testing.T) {
+				wantString := "dead"
+				gotString := ""
+
+				for i := 1; i < len(want); i++ {
+					asciiCode := 96 + want[i].previous
+					gotString += string(rune(asciiCode))
+				}
+
+				if wantString != gotString {
+					t.Errorf("invalid shortest path was formed for vertex")
+				}
+			})
+
+			for i := range got {
+				if got[i].vertex != want[i].vertex {
+					t.Errorf("vertex value: %d does not match expected value: %d", got[i].vertex, want[i].vertex)
+				}
+
+				if got[i].visited != want[i].visited {
+					t.Errorf("vertex value: %t does not match expected value: %t", got[i].visited, want[i].visited)
+				}
+
+				if got[i].distance != want[i].distance {
+					t.Errorf("vertex value: %d does not match expected value: %d", got[i].distance, want[i].distance)
+				}
+
+				if got[i].previous != want[i].previous {
+					t.Errorf("vertex value: %d does not match expected value: %d", got[i].previous, want[i].previous)
+				}
+			}
+		})
 	})
 }
 

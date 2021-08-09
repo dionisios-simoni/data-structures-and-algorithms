@@ -7,6 +7,8 @@ import (
 	"fmt"
 )
 
+const infinity = int(^uint(0) >> 1)
+
 // graph is a graph representation implemented using a map
 type graph struct {
 	graphSize    int
@@ -22,11 +24,18 @@ type vertex struct {
 
 // edge holds connections reference to all vertices
 // which are connected with a given vertex
-// the field weight may or may not be populated
-// depending on the type of the graph.
+// a connection may hold the connected vertex's value and
+// a weight which may be associated to the connection
 type edge struct {
-	connections []int
-	weight      *int
+	connections [][]int
+}
+
+// Table represents Dijkstra's algorithm result table
+type Table struct {
+	vertex   int
+	visited  bool
+	distance int
+	previous int
 }
 
 func newGraph() *graph {
@@ -41,8 +50,7 @@ func (g *graph) addVertex(value int) bool {
 	newVertex := &vertex{
 		value: value,
 		edge: &edge{
-			connections: []int{},
-			weight:      nil,
+			connections: [][]int{},
 		},
 	}
 
@@ -65,18 +73,21 @@ func (g *graph) addEdge(v1, v2 *vertex, weight *int) error {
 		return errors.New("invalid vertex provided, does not exist in the graph")
 	}
 
-	if weight != nil {
-		v2.edge.weight = weight
-	}
-
-	g.appendEdge(v1.value, v2.value)
-	g.appendEdge(v2.value, v1.value)
+	g.appendEdge(v1.value, v2.value, weight)
+	g.appendEdge(v2.value, v1.value, weight)
 
 	return nil
 }
 
-func (g graph) appendEdge(v1, v2 int) {
-	g.adjacentList[v1].edge.connections = append(g.adjacentList[v1].edge.connections, v2)
+func (g graph) appendEdge(v1, v2 int, weight *int) {
+	conn := []int{}
+	conn = append(conn, v2)
+
+	if weight != nil {
+		conn = append(conn, *weight)
+	}
+
+	g.adjacentList[v1].edge.connections = append(g.adjacentList[v1].edge.connections, conn)
 }
 
 // showConnections produces a user friendly output demonstrating the graph connections.
@@ -95,7 +106,6 @@ func (g *graph) traverseBreadthFirstSearch(source int) []int {
 		return result
 	}
 
-
 	queue.Enqueue(source)
 	visited[source] = true
 
@@ -106,9 +116,9 @@ func (g *graph) traverseBreadthFirstSearch(source int) []int {
 		result = append(result, vtx.value)
 
 		for _, conn := range vtx.edge.connections {
-			if visited[conn] == false {
-				queue.Enqueue(conn)
-				visited[conn] = true
+			if visited[conn[0]] == false {
+				queue.Enqueue(conn[0])
+				visited[conn[0]] = true
 			}
 		}
 	}
@@ -135,11 +145,70 @@ func (g *graph) traverseDepthFirstSearch(source int) []int {
 		result = append(result, current)
 
 		for _, conn := range vtx.edge.connections {
-			if visited[conn] == false {
-				visited[conn] = true
-				stack.Push(conn)
+			if visited[conn[0]] == false {
+				visited[conn[0]] = true
+				stack.Push(conn[0])
 			}
 		}
 	}
 	return result
+}
+
+func (g *graph) dijkstra(source int) []Table {
+	visited := make(map[int]bool)
+	distance := g.initDistance(source)
+	previous := make(map[int]int)
+
+	result := []Table{}
+
+	for len(visited) < len(g.adjacentList) {
+		next := getNext(distance, visited)
+
+		visited[next] = true
+		current := g.adjacentList[next]
+
+		for _, conn := range current.edge.connections {
+
+			neighbourDistance := conn[1] + distance[current.value]
+
+			if distance[conn[0]] > neighbourDistance {
+				distance[conn[0]] = neighbourDistance
+				previous[conn[0]] = current.value
+			}
+		}
+
+		result = append(result, Table{
+			vertex:   current.value,
+			previous: previous[current.value],
+			distance: distance[current.value],
+			visited:  visited[current.value],
+		})
+	}
+
+	return result
+}
+
+func getNext(distance map[int]int, visited map[int]bool) int {
+	smallest := infinity
+	var next int
+
+	for k, v := range distance {
+		if v < smallest && !visited[k] {
+			smallest = v
+			next = k
+		}
+	}
+	return next
+}
+
+func (g *graph) initDistance(source int) map[int]int {
+	dst := make(map[int]int)
+	for _, v := range g.adjacentList {
+		if v.value == source {
+			dst[v.value] = 0
+		} else {
+			dst[v.value] = infinity
+		}
+	}
+	return dst
 }

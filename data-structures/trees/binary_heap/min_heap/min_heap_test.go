@@ -1,4 +1,4 @@
-package max_heap
+package min_heap
 
 import (
 	"testing"

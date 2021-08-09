@@ -1,4 +1,4 @@
-package max_heap
+package min_heap
 
 import (
 	"data-structures-and-algorithms/data-structures/trees/binary_heap/common"
